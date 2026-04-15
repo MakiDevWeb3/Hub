@@ -680,6 +680,9 @@
         /iP(hone|ad|od)/.test(ua) &&
         /Safari/.test(ua) &&
         !/CriOS|FxiOS|EdgiOS|OPiOS|Brave/i.test(ua);
+      if (isMobileSafari) {
+        document.body.dataset.iosSafari = "true";
+      }
 
       let dragging = false;
       let moved = false;
@@ -743,17 +746,13 @@
         const panelTop = Math.max(viewport.offsetTop + 16, fabRect.top - panel.offsetHeight - panelGap);
 
         if (isMobileSafari && viewport.width <= 640) {
-          const viewportBottomInset = Math.max(
-            16,
-            window.innerHeight - viewport.offsetTop - viewport.height + 16
-          );
           panel.style.left = "16px";
           panel.style.right = "16px";
           panel.style.width = "auto";
           panel.style.maxWidth = "none";
-          panel.style.maxHeight = "none";
+          panel.style.maxHeight = Math.max(260, viewport.height - 32) + "px";
           panel.style.top = viewport.offsetTop + 16 + "px";
-          panel.style.bottom = viewportBottomInset + "px";
+          panel.style.bottom = "auto";
         } else {
           panel.style.left = panelLeft + "px";
           panel.style.right = "auto";
