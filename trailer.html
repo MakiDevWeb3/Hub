@@ -22,7 +22,7 @@
 
   <link rel="icon" href="https://prod-image-cdn.tensor.trade/images/slug=2c6c34a6-a621-4c5c-a47c-af0aac421579/400x400/freeze=false/https%3A%2F%2Fgateway.irys.xyz%2FCeRVqfexaq6KLjhwmfoS9aE4mgQL9Txv5ToTV9CzAG5n" />
   <link rel="stylesheet" href="trailer.css" />
- 
+
 </head>
 <body>
   <div class="frame" id="frame">
@@ -695,15 +695,29 @@
         return Math.min(Math.max(value, min), max);
       }
 
+      function getViewportMetrics() {
+        const vv = window.visualViewport;
+        return {
+          width: vv?.width || window.innerWidth,
+          height: vv?.height || window.innerHeight,
+          offsetTop: vv?.offsetTop || 0
+        };
+      }
+
       function placePanel() {
+        const viewport = getViewportMetrics();
         const fabRect = fab.getBoundingClientRect();
-        const panelWidth = Math.min(window.innerWidth * 0.92, 360);
+        const panelWidth = Math.min(viewport.width * 0.92, 360);
         const panelLeft = clamp(
           fabRect.right - panelWidth,
           16,
-          window.innerWidth - panelWidth - 16
+          viewport.width - panelWidth - 16
         );
-        const panelTop = Math.max(16, fabRect.top - panel.offsetHeight - 88);
+        const panelGap = viewport.width <= 640 ? 132 : 88;
+        const panelTop = Math.max(
+          viewport.offsetTop + 16,
+          fabRect.top - panel.offsetHeight - panelGap
+        );
 
         panel.style.left = panelLeft + "px";
         panel.style.right = "auto";
@@ -712,11 +726,12 @@
       }
 
       function setFabPosition(left, top) {
-        const maxLeft = window.innerWidth - fab.offsetWidth - 12;
-        const maxTop = window.innerHeight - fab.offsetHeight - getSafeBottom() - 12;
+        const viewport = getViewportMetrics();
+        const maxLeft = viewport.width - fab.offsetWidth - 12;
+        const maxTop = viewport.offsetTop + viewport.height - fab.offsetHeight - getSafeBottom() - 12;
 
         fab.style.left = clamp(left, 12, maxLeft) + "px";
-        fab.style.top = clamp(top, 12, maxTop) + "px";
+        fab.style.top = clamp(top, viewport.offsetTop + 12, maxTop) + "px";
         fab.style.right = "auto";
         fab.style.bottom = "auto";
 
@@ -771,6 +786,9 @@
       window.addEventListener("resize", () => {
         if (fab.style.left) placePanel();
       });
+
+      window.visualViewport?.addEventListener("resize", placePanel);
+      window.visualViewport?.addEventListener("scroll", placePanel);
     })();
   </script>
 </body>
