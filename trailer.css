@@ -817,6 +817,18 @@
       pointer-events:auto;
     }
 
+    body[data-ios-safari="true"] .control-panel{
+      left:16px;
+      right:16px;
+      width:auto;
+      max-width:none;
+      top:calc(var(--safe-top) + 16px);
+      bottom:auto;
+      max-height:min(56dvh, 420px);
+      border-radius:20px;
+      transform-origin:top center;
+    }
+
     .control-row{
       display:flex;
       gap:10px;
