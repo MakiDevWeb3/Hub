@@ -683,6 +683,7 @@
 
       let dragging = false;
       let moved = false;
+      let userMovedFab = false;
       let startX = 0;
       let startY = 0;
       let originLeft = 0;
@@ -705,8 +706,28 @@
         return {
           width: vv?.width || window.innerWidth,
           height: vv?.height || window.innerHeight,
-          offsetTop: vv?.offsetTop || 0
+          offsetTop: vv?.offsetTop || 0,
+          offsetLeft: vv?.offsetLeft || 0
         };
+      }
+
+      function placeFabInSafeZone() {
+        const viewport = getViewportMetrics();
+        const minLeft = viewport.offsetLeft + 12;
+        const maxLeft = viewport.offsetLeft + viewport.width - fab.offsetWidth - 12;
+        const viewportBottomInset = Math.max(
+          getSafeBottom() + 18,
+          window.innerHeight - viewport.offsetTop - viewport.height + 18
+        );
+        const minTop = viewport.offsetTop + 12;
+        const maxTop = viewport.offsetTop + viewport.height - fab.offsetHeight - viewportBottomInset;
+        const left = viewport.offsetLeft + viewport.width - fab.offsetWidth - 16;
+        const top = viewport.offsetTop + viewport.height - fab.offsetHeight - viewportBottomInset;
+
+        fab.style.left = clamp(left, minLeft, maxLeft) + "px";
+        fab.style.top = clamp(top, minTop, maxTop) + "px";
+        fab.style.right = "auto";
+        fab.style.bottom = "auto";
       }
 
       function placePanel() {
@@ -746,10 +767,11 @@
 
       function setFabPosition(left, top) {
         const viewport = getViewportMetrics();
-        const maxLeft = viewport.width - fab.offsetWidth - 12;
+        const maxLeft = viewport.offsetLeft + viewport.width - fab.offsetWidth - 12;
         const maxTop = viewport.offsetTop + viewport.height - fab.offsetHeight - getSafeBottom() - 12;
+        userMovedFab = true;
 
-        fab.style.left = clamp(left, 12, maxLeft) + "px";
+        fab.style.left = clamp(left, viewport.offsetLeft + 12, maxLeft) + "px";
         fab.style.top = clamp(top, viewport.offsetTop + 12, maxTop) + "px";
         fab.style.right = "auto";
         fab.style.bottom = "auto";
@@ -803,11 +825,31 @@
       });
 
       window.addEventListener("resize", () => {
-        if (fab.style.left) placePanel();
+        if (isMobileSafari && !userMovedFab) {
+          placeFabInSafeZone();
+        }
+        placePanel();
       });
 
-      window.visualViewport?.addEventListener("resize", placePanel);
-      window.visualViewport?.addEventListener("scroll", placePanel);
+      window.visualViewport?.addEventListener("resize", () => {
+        if (isMobileSafari && !userMovedFab) {
+          placeFabInSafeZone();
+        }
+        placePanel();
+      });
+      window.visualViewport?.addEventListener("scroll", () => {
+        if (isMobileSafari && !userMovedFab) {
+          placeFabInSafeZone();
+        }
+        placePanel();
+      });
+
+      if (isMobileSafari) {
+        requestAnimationFrame(() => {
+          placeFabInSafeZone();
+          placePanel();
+        });
+      }
     })();
   </script>
 </body>
