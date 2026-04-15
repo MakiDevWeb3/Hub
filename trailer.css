@@ -790,7 +790,7 @@
     .control-panel{
       position:fixed;
       right:var(--safe-right);
-      bottom:calc(var(--control-bottom) + env(safe-area-inset-bottom));
+      bottom:calc(var(--control-bottom) + env(safe-area-inset-bottom) + 38px);
       z-index:29;
       display:flex;
       flex-direction:column;
