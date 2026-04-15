@@ -675,6 +675,11 @@
       const fab = document.getElementById("controlFab");
       const panel = document.getElementById("controlPanel");
       if (!fab || !panel) return;
+      const ua = navigator.userAgent || "";
+      const isMobileSafari =
+        /iP(hone|ad|od)/.test(ua) &&
+        /Safari/.test(ua) &&
+        !/CriOS|FxiOS|EdgiOS|OPiOS|Brave/i.test(ua);
 
       let dragging = false;
       let moved = false;
@@ -713,16 +718,23 @@
           16,
           viewport.width - panelWidth - 16
         );
-        const panelGap = viewport.width <= 640 ? 132 : 88;
-        const panelTop = Math.max(
-          viewport.offsetTop + 16,
-          fabRect.top - panel.offsetHeight - panelGap
-        );
+        const panelGap = viewport.width <= 640 ? (isMobileSafari ? 172 : 132) : 88;
+        const panelTop = Math.max(viewport.offsetTop + 16, fabRect.top - panel.offsetHeight - panelGap);
 
         panel.style.left = panelLeft + "px";
         panel.style.right = "auto";
-        panel.style.top = panelTop + "px";
-        panel.style.bottom = "auto";
+        if (isMobileSafari && viewport.width <= 640) {
+          const panelBottom = clamp(
+            window.innerHeight - fabRect.top + panelGap,
+            getSafeBottom() + 16,
+            window.innerHeight - 16
+          );
+          panel.style.top = "auto";
+          panel.style.bottom = panelBottom + "px";
+        } else {
+          panel.style.top = panelTop + "px";
+          panel.style.bottom = "auto";
+        }
       }
 
       function setFabPosition(left, top) {
