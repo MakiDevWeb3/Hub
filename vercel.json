@@ -5,7 +5,7 @@
     {
       "source": "/robots.txt",
       "destination": "https://www.youtube.com/watch?v=fTKbs7P_i3c&list=RDfTKbs7P_i3c&start_radio=1&pp=ygUQbGVzIHB0aXRzIGluZGllbqAHAQ%3D%3D",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/intro-trailer.html",
