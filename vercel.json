@@ -1,0 +1,121 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/robots.txt",
+      "destination": "https://www.youtube.com/watch?v=fTKbs7P_i3c&list=RDfTKbs7P_i3c&start_radio=1&pp=ygUQbGVzIHB0aXRzIGluZGllbqAHAQ%3D%3D",
+      "permanent": false
+    },
+    {
+      "source": "/intro-trailer.html",
+      "destination": "/trailer",
+      "permanent": true
+    },
+    {
+      "source": "/hubcrypto-details.html",
+      "destination": "/hub-details",
+      "permanent": true
+    },
+    {
+      "source": "/trailer.html",
+      "destination": "/trailer",
+      "permanent": true
+    },
+    {
+      "source": "/hub-details.html",
+      "destination": "/hub-details",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/trailer",
+      "destination": "/trailer.html"
+    },
+    {
+      "source": "/hub-details",
+      "destination": "/hub-details.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/hub-details",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/hub-details.html",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/trailer",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/trailer.html",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    }
+  ]
+}
