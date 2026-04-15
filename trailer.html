@@ -721,13 +721,23 @@
         const panelGap = viewport.width <= 640 ? (isMobileSafari ? 172 : 132) : 88;
         const panelTop = Math.max(viewport.offsetTop + 16, fabRect.top - panel.offsetHeight - panelGap);
 
-        panel.style.left = panelLeft + "px";
-        panel.style.right = "auto";
         if (isMobileSafari && viewport.width <= 640) {
-          panel.style.maxHeight = Math.max(220, viewport.height - 32) + "px";
+          const viewportBottomInset = Math.max(
+            16,
+            window.innerHeight - viewport.offsetTop - viewport.height + 16
+          );
+          panel.style.left = "16px";
+          panel.style.right = "16px";
+          panel.style.width = "auto";
+          panel.style.maxWidth = "none";
+          panel.style.maxHeight = "none";
           panel.style.top = viewport.offsetTop + 16 + "px";
-          panel.style.bottom = "auto";
+          panel.style.bottom = viewportBottomInset + "px";
         } else {
+          panel.style.left = panelLeft + "px";
+          panel.style.right = "auto";
+          panel.style.width = "";
+          panel.style.maxWidth = "";
           panel.style.maxHeight = "";
           panel.style.top = panelTop + "px";
           panel.style.bottom = "auto";
